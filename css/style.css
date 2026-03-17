@@ -1,0 +1,259 @@
+/* === Reset básico === */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #0a0a0a;
+    color: #d8d8d8;
+    font-family: "Fira Code", "Courier New", Courier, monospace;
+    line-height: 1.7;
+}
+
+/* === Estrutura === */
+header,
+main,
+footer,
+address {
+    width: 100%;
+}
+
+main,
+footer,
+address,
+header h1 {
+    max-width: 860px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* === Header === */
+header {
+    padding-top: 2rem;
+}
+
+header h1 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: left;
+    color: #f0f0f0;
+}
+
+header h1 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* === Bloco de links / contato === */
+address {
+    margin-bottom: 2rem;
+    font-style: normal;
+    color: #a8a8a8;
+    text-align: left;
+}
+
+/* === Conteúdo === */
+main {
+    padding-top: 0.5rem;
+    padding-bottom: 2rem;
+}
+
+article {
+    margin: 0 auto 2rem;
+    max-width: 860px;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
+/* === Tipografia === */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #f2f2f2;
+    line-height: 1.3;
+    font-weight: 600;
+}
+
+h2 {
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.3rem;
+}
+
+h3 {
+    margin-top: 1.6rem;
+    margin-bottom: 0.7rem;
+    font-size: 1.1rem;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+time {
+    display: inline-block;
+    color: #8f8f8f;
+    font-size: 0.95rem;
+    margin-top: 0.2rem;
+}
+
+/* === Links === */
+a {
+    color: #8ab4f8;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    text-decoration: underline;
+}
+
+/* === Lista de artigos === */
+ul,
+ol {
+    margin: 0 0 1rem 1.5rem;
+    padding: 0;
+}
+
+section > ul {
+    list-style: none;
+    margin-left: 0;
+}
+
+section > ul > li {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+section > ul > li:last-child {
+    border-bottom: none;
+}
+
+/* === Imagens === */
+main img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem auto;
+    border: 1px solid #2a2a2a;
+}
+
+/* === Código inline === */
+code {
+    font-family: "Fira Code", "Courier New", Courier, monospace;
+    font-size: 0.95em;
+}
+
+p code,
+li code,
+td code,
+blockquote code {
+    background: #111111;
+    color: #f0f0f0;
+    padding: 0.08em 0.3em;
+    border-radius: 2px;
+    white-space: break-spaces;
+}
+
+/* === Blocos de código === */
+pre {
+    margin: 1.25rem 0;
+    padding: 1rem;
+    overflow-x: auto;
+    background: #111111;
+    border: 1px solid #1f1f1f;
+    border-radius: 4px;
+    line-height: 1.5;
+}
+
+pre code {
+    display: block;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    white-space: pre;
+}
+
+/* === Highlight do Pandoc === */
+code span.kw { color: #ffb86c; }
+code span.dt { color: #bd93f9; }
+code span.st { color: #a5d6a7; }
+code span.fu { color: #ffd54f; }
+code span.ot { color: #d8d8d8; }
+code span.co { color: #7f848e; font-style: italic; }
+code span.nb { color: #81d4fa; }
+code span.pp { color: #f0c674; }
+
+/* === Blockquote === */
+blockquote {
+    margin: 1.25rem 0;
+    padding: 0.75rem 1rem;
+    border-left: 3px solid #2f2f2f;
+    color: #bdbdbd;
+    background: #0f0f0f;
+}
+
+/* === Tabelas === */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+}
+
+th,
+td {
+    padding: 0.65rem;
+    border: 1px solid #1f1f1f;
+    text-align: left;
+}
+
+th {
+    color: #f0f0f0;
+    background: #101010;
+}
+
+/* === Rodapé === */
+footer {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    color: #8a8a8a;
+    font-size: 0.92rem;
+    text-align: left;
+}
+
+/* === Responsividade === */
+@media (max-width: 640px) {
+    html {
+        font-size: 15px;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    main,
+    footer,
+    address,
+    header h1 {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}

@@ -1,0 +1,8 @@
+_site/ 
+_cache/ 
+dist-newstyle/ 
+dist/ 
+*.o 
+*.hi
+*.swp 
+*.tmp
