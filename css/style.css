@@ -257,3 +257,13 @@ footer {
         padding-right: 16px;
     }
 }
+
+.wallet {
+    color:#ff6700;
+}
+
+.wallet code {
+    display: inline;
+    white-space: normal;
+    font-size: 0.7rem;
+}
