@@ -9,25 +9,27 @@ og_image: "/images/spl-rev-split-tunnel-on-fbsd-w-setfib.webp"
 
 ## Introduction
 
-A common split tunneling setup keeps the normal network as the default path and sends only seleted traffic through the VPN.
+A common split tunneling setup keeps the normal network as the default path and sends only selected traffic through the VPN.
 
 Reverse split tunneling is the opposite.
 
-In this model, the system is effectively VPN-first for ordinary traffic, while only selected applications are allowed to escape through the normal network.
+The system becomes effectively VPN-first, while selected applications bypass the tunnel through the normal network.
 
 On FreeBSD, one of the simplest ways to do this is with multiple FIB and `setfib(1)`.
 
-A FIB is basically a routing table. By keeping the VPN-oriented routing in the default FIB and preserving the normal gateway in another one, I can choose which processes bypass the tunnel simply by starting them with `setfib`.
+A FIB is an independent routing table. By keeping the VPN-oriented routing in the default FIB and preserving the normal gateway in another one, I can choose which processes bypass the tunnel simply by starting them with `setfib`.
 
-Ths gives a clean and simple form of reverse split tunneling:
+This gives a clean and simple form of reverse split tunneling:
 
 - Regular system traffic goes through the VPN
-- Selected applications bass the VPN
-- ROuting stays simple and explicit
+- Selected applications bybass the VPN
+- Routing stays simple and explicit
 
 ##  What `setfib(1)` does?
 
-`setfib(1)` runs a command with a different default routing table. In practice, this means sockets opened by that process will use the selected FIB instead of the default one.
+`setfib(1)` runs a command using another routing table.
+
+Sockets opened by that process inherit the selected FIB.
 
 For example, if my non-VPN routes live in FIB 1:
 
@@ -63,13 +65,13 @@ FIB 1:
 
 ```
 
-In other words, the main routing table keeps just enough normal routing for the tunnel itself to stay reachable, while almost all ordinary traffic is catured by two half-deault routes through `wg0`.
+In other words, the main routing table keeps just enough normal routing for the tunnel itself to stay reachable, while almost all ordinary traffic is captured by two half-default routes through `wg0`.
 
 That is exactly what reverse split tunneling needs:
 
 - Ordinary traffic uses the VPN in the default routing view
 - the WireGuard peer remains reachable outside the tunnel
-- Selected applications can bypass the VPn by running under another FIB
+- Selected applications can bypass the VPN by running under another FIB
 
 In my case, the tables looked like this:
 
@@ -83,7 +85,7 @@ FIB 1:
   default        -> 10.0.0.1 via wifibox0
 ```
 
-So even though FIB 0 still had a normal default route, the two `/1` routes were more specific and therefore won for almost all IPv4 traffic. The hos routet for the VPN endpoint stayed outside the tunnel, which prevented the tunnel from trying to route itself through itself.
+So even though FIB 0 still had a normal default route, the two `/1` routes were more specific and therefore won for almost all IPv4 traffic. The host route for the VPN endpoint stayed outside the tunnel, which prevented the tunnel from trying to route itself through itself.
 
 ## Enabling multiple FIBs
 
@@ -116,5 +118,79 @@ $ netstat -rn
 You should note your regular default route, something like:
 
 ```text
-default 192.168.15.1
+default 10.0.0.1
 ```
+That gateway is what FIB 1 will use as the non-VPN path.
+
+## Creating the clearnet FIB
+
+Add your regular default route to FIB 1:
+
+```sh
+$ doas setfib 1 route add default 10.0.0.1
+```
+
+Then confirm it:
+
+```sh
+$ setfib 1 netstat -rn
+```
+
+You should see something similar to:
+
+```text
+Internet:
+Destination Gateway  Flags Netif
+default     10.0.0.1 UGS   wifibox0
+```
+Now FIB 1 has a normal internet route, while the default FIB remains VPN-first.
+
+## Testing route selection
+
+Compare route lookups between the FIBs.
+
+Default FIB:
+
+```sh
+$ route -n get 1.1.1.1
+```
+
+This should prefer `wg0`.
+
+FIB 1:
+
+```sh
+$ setfib 1 route -n get 1.1.1.1
+```
+
+This should use the normal gateway instead:
+
+```text
+gateway: 10.0.0.1
+interface: wifibox0
+```
+
+## Notes
+
+This setup only changes which routing table a process uses.
+
+It is not a sandbox or a firewall replacement.
+
+Also remember to think about IPv6 and DNS separately if stricter separation is required.
+
+## Conclusion
+
+The resulting model is straightforward:
+
+```text
+Default system traffic -> VPN
+Selected applications -> clearnet
+```
+
+And the interface stays minimal:
+
+```
+$ setfib 1 <command>
+```
+
+A very simple and minimal form of reverse split tunneling on FreeBSD.
