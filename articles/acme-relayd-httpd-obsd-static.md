@@ -3,6 +3,7 @@ title: "OpenBSD: Setup static sites with acme-client, httpd and relayd"
 date: 2025-11-26
 description: "How to host a static site on OpenBSD with httpd, relayd, acme-client and TLS termination."
 og_image: "/images/openbsd-static-pages-article.webp"
+environment: "OpenBSD 7.7 (VPS)"
 ---
 
 ![Setup static sites on OpenBSD](/images/openbsd-static-pages-article.webp)

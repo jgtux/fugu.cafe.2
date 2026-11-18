@@ -3,6 +3,7 @@ title: "Golang: Go concurrency applied in back-ends"
 date: 2025-11-13
 description: "A practical introduction to Go concurrency in back-end development using goroutines, channels, sync, atomic, and context."
 og_image: "/images/go-concurrency-article.webp"
+environment: "Go 1.25"
 ---
 
 ![Go concurrency applied in back-ends](/images/go-concurrency-article.webp)
