@@ -1,3 +1,12 @@
+/* === Fonte (self-hosted, OFL) === */
+@font-face {
+    font-family: "Fira Code";
+    src: url("/fonts/fira-code.woff2") format("woff2");
+    font-weight: 300 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* === Reset básico === */
 * {
     box-sizing: border-box;
@@ -30,9 +39,10 @@ address {
 main,
 footer,
 address,
-header h1 {
+body > header h1 {
     max-width: 860px;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
     padding-left: 20px;
     padding-right: 20px;
 }
@@ -294,18 +304,45 @@ footer {
     main,
     footer,
     address,
-    header h1 {
+    body > header h1 {
         padding-left: 16px;
         padding-right: 16px;
     }
 }
 
+/* === Badges 88x31 === */
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 1.25rem;
+}
+
+.badges a,
+.badges span {
+    display: block;
+    line-height: 0;
+}
+
+.badges img {
+    display: block;
+    width: 88px;
+    height: 31px;
+    margin: 0;
+    border: 0;
+    image-rendering: pixelated;
+}
+
+/* === Carteira (rodapé) === */
 .wallet {
-    color:#ff6700;
+    color: #8a8a8a;
 }
 
 .wallet code {
-    display: inline;
+    display: block;
+    margin-top: 0.2rem;
+    color: #ffb86c;
+    font-size: 0.75rem;
+    overflow-wrap: anywhere;
     white-space: normal;
-    font-size: 0.7rem;
 }
