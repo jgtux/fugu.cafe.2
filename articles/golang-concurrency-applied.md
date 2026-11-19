@@ -15,7 +15,7 @@ concurrency. Before that, I wanted to do another article about Go
 back-ends, but I decided to cover both subjects, applying Go concurrency
 in back-ends.
 
-## Concurrency in a Nutshell
+## Concurrency in a nutshell
 
 First of all, we need to recall what concurrency is, an essential
 concept for building efficient and high-performance applications.

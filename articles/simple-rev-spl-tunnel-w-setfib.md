@@ -26,7 +26,7 @@ This gives a clean and simple form of reverse split tunneling:
 - Selected applications bybass the VPN
 - Routing stays simple and explicit
 
-##  What `setfib(1)` does?
+## What `setfib(1)` does?
 
 `setfib(1)` runs a command using another routing table.
 
@@ -190,7 +190,7 @@ Selected applications -> clearnet
 
 And the interface stays minimal:
 
-```
+```sh
 $ setfib 1 <command>
 ```
 

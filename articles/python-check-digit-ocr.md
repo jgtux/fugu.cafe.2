@@ -58,9 +58,9 @@ True
 ```
 
 What they guarantee is narrow. EAN-13 catches every single wrong digit,
-and every swap of two neighbour digits, except when the two digits
+and every swap of two neighbor digits, except when the two digits
 differ by 5. Mod 97 catches every single wrong character and every
-swap of two neighbour digits. Both are checked by the tests in the
+swap of two neighbor digits. Both are checked by the tests in the
 repository, not just stated here.
 
 ## Generating the labels
@@ -108,7 +108,7 @@ and `--psm 11` fixed it.
 
 An OCR read is only accepted if it passes its checksum.
 
-## Look at the output
+## Read rates under degradation
 
 Share of the 40 labels read correctly, per degradation level:
 

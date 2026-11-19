@@ -94,7 +94,7 @@ func NumberAdd[T Number](a, b T) T {
 
 See the difference.
 
-## Important notes
+## Notes
 
 When using untyped constants, the compiler cannot infer a type if the
 constant can fit into ambiguous types, see:
