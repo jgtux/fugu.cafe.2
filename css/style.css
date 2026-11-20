@@ -333,6 +333,19 @@ figure img {
     margin-bottom: 0.5rem;
 }
 
+/* charts come in a latte and an espresso file; show the one matching the
+   active scheme (OS preference, flipped by the #theme toggle) */
+.theme-dark { display: none; }
+:root:has(#theme:checked) .theme-light { display: none; }
+:root:has(#theme:checked) .theme-dark { display: block; }
+
+@media (prefers-color-scheme: dark) {
+    .theme-light { display: none; }
+    .theme-dark { display: block; }
+    :root:has(#theme:checked) .theme-light { display: block; }
+    :root:has(#theme:checked) .theme-dark { display: none; }
+}
+
 figcaption {
     color: var(--dim);
     font-size: 0.9rem;
