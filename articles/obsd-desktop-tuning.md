@@ -1,8 +1,9 @@
 ---
-title: "OpenBSD: Desktop Tuning Guide"
+title: "OpenBSD: Desktop tuning guide"
 date: 2025-10-18
 description: "A practical guide to tuning an OpenBSD desktop with sysctl, login.conf, fstab, and mfs for responsiveness and better resource usage."
 og_image: "/images/obsd-tuning-dsk-article.webp"
+environment: "OpenBSD 7.7, ThinkPad X260"
 ---
 
 ![OpenBSD desktop tuning](/images/obsd-tuning-dsk-article.webp)

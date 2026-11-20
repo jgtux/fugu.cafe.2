@@ -2,6 +2,12 @@
   <header>
     <h1>$title$</h1>
     <p><time datetime="$date$">$date$</time></p>
+    $if(code)$
+    <p class="meta">code: <a href="$code$">$code$</a></p>
+    $endif$
+    $if(environment)$
+    <p class="meta">environment: $environment$</p>
+    $endif$
   </header>
   $body$
 </article>

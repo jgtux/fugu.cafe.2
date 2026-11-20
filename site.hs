@@ -1,11 +1,23 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Hakyll
+import Text.Pandoc.Options (HTMLMathMethod (..), WriterOptions (..))
+
+siteDescription :: String
+siteDescription = "Technical notes on UNIX-based systems, networking, data, machine learning, privacy, programming, opinions and related topics."
+
+-- MathML is rendered by the browser itself: no JavaScript, so it fits the
+-- relayd Content-Security-Policy (default-src 'self', no inline scripts)
+articleCompiler :: Compiler (Item String)
+articleCompiler =
+    pandocCompilerWith
+        defaultHakyllReaderOptions
+        defaultHakyllWriterOptions { writerHTMLMathMethod = MathML }
 
 feedConfig :: FeedConfiguration
 feedConfig = FeedConfiguration
     { feedTitle       = "Home"
-    , feedDescription = "Technical notes on UNIX-based systems, networking, privacy, programming, opinions and related topics."
+    , feedDescription = siteDescription
     , feedAuthorName  = "João G."
     , feedAuthorEmail = "joao.guedes@posteo.com"
     , feedRoot        = "https://fugu.cafe"
@@ -24,7 +36,16 @@ feedCtx =
 
 main :: IO ()
 main = hakyll $ do
-    match "images/*" $ do
+    match "images/**" $ do
+        route idRoute
+        compile copyFileCompiler
+
+    -- browsers ask for /favicon.ico before reading any <link>
+    match "images/icons/favicon.ico" $ version "root" $ do
+        route $ constRoute "favicon.ico"
+        compile copyFileCompiler
+
+    match "fonts/*" $ do
         route idRoute
         compile copyFileCompiler
 
@@ -35,7 +56,7 @@ main = hakyll $ do
     match "articles/*.md" $ do
         route $ setExtension "html"
         compile $
-            pandocCompiler
+            articleCompiler
                 >>= saveSnapshot "content"
                 >>= loadAndApplyTemplate "templates/post.html" postCtx
                 >>= loadAndApplyTemplate "templates/default.html" postCtx
@@ -48,7 +69,7 @@ main = hakyll $ do
             let indexCtx =
                     listField "posts" postCtx (return posts) <>
                     constField "title" "fugu.cafe" <>
-                    constField "description" "Technical notes on UNIX-based systems, networking, privacy, programming, opinions and related topics." <>
+                    constField "description" siteDescription <>
                     constField "root" "https://fugu.cafe" <>
                     constField "isHome" "true" <>
                     defaultContext

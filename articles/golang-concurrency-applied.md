@@ -3,6 +3,7 @@ title: "Golang: Go concurrency applied in back-ends"
 date: 2025-11-13
 description: "A practical introduction to Go concurrency in back-end development using goroutines, channels, sync, atomic, and context."
 og_image: "/images/go-concurrency-article.webp"
+environment: "Go 1.25"
 ---
 
 ![Go concurrency applied in back-ends](/images/go-concurrency-article.webp)
@@ -14,7 +15,7 @@ concurrency. Before that, I wanted to do another article about Go
 back-ends, but I decided to cover both subjects, applying Go concurrency
 in back-ends.
 
-## Concurrency in a Nutshell
+## Concurrency in a nutshell
 
 First of all, we need to recall what concurrency is, an essential
 concept for building efficient and high-performance applications.
