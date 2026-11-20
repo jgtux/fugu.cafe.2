@@ -6,7 +6,7 @@ og_image: "/images/golang-generic-typesets.webp"
 environment: "Go 1.25"
 ---
 
-![Golang Generic Typesets](/images/golang-generic-typesets.webp)
+![Golang Generic Typesets](/images/golang-generic-typesets.webp){.ink}
 
 ## Introduction
 

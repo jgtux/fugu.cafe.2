@@ -6,7 +6,7 @@ og_image: "/images/go-concurrency-article.webp"
 environment: "Go 1.25"
 ---
 
-![Go concurrency applied in back-ends](/images/go-concurrency-article.webp)
+![Go concurrency applied in back-ends](/images/go-concurrency-article.webp){.ink}
 
 ## Introduction
 
