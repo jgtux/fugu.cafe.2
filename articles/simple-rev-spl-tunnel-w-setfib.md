@@ -23,7 +23,7 @@ A FIB is an independent routing table. By keeping the VPN-oriented routing in th
 This gives a clean and simple form of reverse split tunneling:
 
 - Regular system traffic goes through the VPN
-- Selected applications bybass the VPN
+- Selected applications bypass the VPN
 - Routing stays simple and explicit
 
 For detailed information and more options, check [FreeBSD man pages](https://man.freebsd.org).

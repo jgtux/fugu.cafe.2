@@ -1,6 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+import Data.Bits (xor)
+import Data.Char (ord)
+import Data.Word (Word32)
 import Hakyll
+import Numeric (showHex)
 import Text.Pandoc.Options (HTMLMathMethod (..), WriterOptions (..))
 
 siteDescription :: String
@@ -23,10 +27,21 @@ feedConfig = FeedConfiguration
     , feedRoot        = "https://fugu.cafe"
     }
 
+-- relayd sends max-age=86400: a new ?v= per stylesheet change makes
+-- returning visitors fetch it instead of pairing new pages with old css
+fnv1a :: String -> String
+fnv1a = flip showHex "" . foldl step (2166136261 :: Word32)
+  where
+    step h c = (h `xor` fromIntegral (ord c)) * 16777619
+
+cssVersionField :: Context a
+cssVersionField = field "cssv" $ \_ -> fnv1a <$> loadBody "css/style.css"
+
 postCtx :: Context String
 postCtx =
     constField "root" "https://fugu.cafe" <>
     dateField "date" "%Y-%m-%d" <>
+    cssVersionField <>
     defaultContext
 
 feedCtx :: Context String
@@ -72,6 +87,7 @@ main = hakyll $ do
                     constField "description" siteDescription <>
                     constField "root" "https://fugu.cafe" <>
                     constField "isHome" "true" <>
+                    cssVersionField <>
                     defaultContext
 
             makeItem ""

@@ -1,8 +1,8 @@
 ---
 title: "Python: Reading check-digit codes from images, barcode first"
-date: 2026-11-18
+date: 2026-11-20
 description: "Reading EAN-13 barcodes and IBANs from degraded images with pyzbar and Tesseract, and measuring what checksum repair really fixes."
-code: "https://github.com/jgtux/checkdigit-vision/tree/62b547f"
+code: "https://github.com/jgtux/checkdigit-vision/tree/867d91a"
 og_image: "/images/check-digit-ocr-article.webp"
 environment: "Linux x86_64, Python 3.14.7, Tesseract 5.5.3, pyzbar 0.1.9, OpenCV 5.1"
 ---
