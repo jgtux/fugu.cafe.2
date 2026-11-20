@@ -26,6 +26,8 @@ This gives a clean and simple form of reverse split tunneling:
 - Selected applications bybass the VPN
 - Routing stays simple and explicit
 
+For detailed information and more options, check [FreeBSD man pages](https://man.freebsd.org).
+
 ## What `setfib(1)` does?
 
 `setfib(1)` runs a command using another routing table.
