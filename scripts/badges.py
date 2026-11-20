@@ -1,4 +1,8 @@
-"""Generate 88x31 badges for fugu.cafe using the site's own palette."""
+"""Generate 88x31 badges for fugu.cafe using the site's own palette.
+
+One espresso set for both themes: on the latte background the badges read
+as dark chips, which is how 88x31 buttons always looked anyway.
+"""
 import math
 import sys
 from pathlib import Path
@@ -6,21 +10,22 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 W, H = 88, 31
-BG = (17, 17, 17)
-EDGE = (42, 42, 42)
-HI = (70, 70, 70)
-LO = (5, 5, 5)
-TEXT = (216, 216, 216)
-DIM = (143, 143, 143)
+# espresso surfaces from css/style.css (dark side of light-dark())
+BG = (33, 25, 19)       # --surface #211913
+EDGE = (58, 45, 35)     # --border #3a2d23
+HI = (92, 74, 60)
+LO = (12, 8, 6)
+TEXT = (234, 220, 203)  # --text #eadccb
+DIM = (156, 138, 122)   # --dim #9c8a7a
 
-# syntax highlight palette from css/style.css
-ORANGE = (255, 184, 108)
-PURPLE = (189, 147, 249)
-GREEN = (165, 214, 167)
-YELLOW = (255, 213, 79)
-BLUE = (129, 212, 250)
-RED = (247, 140, 108)
-LINK = (138, 180, 248)
+# syntax highlight palette from css/style.css (dark side)
+ORANGE = (230, 173, 114)  # --kw caramel #e6ad72
+PURPLE = (207, 160, 220)  # --dt #cfa0dc
+GREEN = (176, 204, 156)   # --st #b0cc9c
+YELLOW = (240, 208, 126)  # --fu honey #f0d07e
+BLUE = (156, 203, 208)    # --nb #9ccbd0
+RED = (238, 144, 112)     # --num cinnamon #ee9070
+LINK = (230, 173, 114)    # --link #e6ad72
 
 FONT = ImageFont.load_default_imagefont()
 
@@ -147,6 +152,52 @@ def fugu_frames():
     return frames
 
 
+def icon(n):
+    """Pixel pufferfish on the site background, drawn natively at n px."""
+    img = Image.new("RGBA", (n, n), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle([0, 0, n - 1, n - 1], radius=max(2, n // 6), fill=BG)
+    k = n / 32
+    cx, cy, r = round(17 * k), round(16 * k), round(9 * k)
+    # tail
+    d.polygon(
+        [(cx - r - round(5 * k), cy - round(4 * k)),
+         (cx - r - round(5 * k), cy + round(4 * k)),
+         (cx - r + 1, cy)],
+        fill=BLUE,
+    )
+    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=BLUE)
+    # spikes
+    count = 12 if n >= 32 else 8
+    for i in range(count):
+        a = 2 * math.pi * (i + 0.5) / count
+        for step in (1, 2) if n >= 32 else (1,):
+            x = cx + (r + step) * math.cos(a)
+            y = cy + (r + step) * math.sin(a)
+            d.point((round(x), round(y)), fill=BLUE)
+    # eye and mouth
+    e = max(1, round(2 * k))
+    ex, ey = cx + round(3 * k), cy - round(3 * k)
+    d.rectangle([ex, ey, ex + e - 1, ey + e - 1], fill=BG)
+    d.point((cx + r - 1, cy + round(2 * k)), fill=BG)
+    return img
+
+
+def icons(out):
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    i16, i32, i48 = icon(16), icon(32), icon(48)
+    i32.save(out / "favicon-32.png", optimize=True)
+    # ico: save from the largest frame so every native size is kept
+    i48.save(out / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)],
+             append_images=[i16, i32])
+    # apple touch: opaque, 32px art scaled 5x with nearest neighbour, padded
+    touch = Image.new("RGB", (180, 180), BG)
+    big = i32.resize((160, 160), Image.NEAREST)
+    touch.paste(big, (10, 10), big)
+    touch.save(out / "apple-touch-icon.png", optimize=True)
+
+
 def main(out):
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -170,4 +221,7 @@ def main(out):
 
 
 if __name__ == "__main__":
+    # usage: badges.py <badges-dir> [icons-dir]
     main(sys.argv[1])
+    if len(sys.argv) > 2:
+        icons(sys.argv[2])

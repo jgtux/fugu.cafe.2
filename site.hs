@@ -40,6 +40,11 @@ main = hakyll $ do
         route idRoute
         compile copyFileCompiler
 
+    -- browsers ask for /favicon.ico before reading any <link>
+    match "images/icons/favicon.ico" $ version "root" $ do
+        route $ constRoute "favicon.ico"
+        compile copyFileCompiler
+
     match "fonts/*" $ do
         route idRoute
         compile copyFileCompiler

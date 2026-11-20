@@ -1,10 +1,97 @@
-/* === Fonte (self-hosted, OFL) === */
+/* === Fontes (self-hosted) === */
+/* Fira Code (OFL): estrutura e código */
 @font-face {
     font-family: "Fira Code";
     src: url("/fonts/fira-code.woff2") format("woff2");
     font-weight: 300 700;
     font-style: normal;
     font-display: swap;
+}
+
+/* New Computer Modern Book/Bold (GUST): prosa */
+@font-face {
+    font-family: "New Computer Modern";
+    src: url("/fonts/new-cm-400-normal.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "New Computer Modern";
+    src: url("/fonts/new-cm-400-italic.woff2") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "New Computer Modern";
+    src: url("/fonts/new-cm-700-normal.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "New Computer Modern";
+    src: url("/fonts/new-cm-700-italic.woff2") format("woff2");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Latin Modern Math (GUST): only downloaded on pages that have MathML */
+@font-face {
+    font-family: "Latin Modern Math";
+    src: url("/fonts/latin-modern-math.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* === Paleta: café === */
+/* light-dark(latte, espresso): follows color-scheme, so the toggle below
+   only has to flip color-scheme. No JavaScript involved. */
+:root {
+    color-scheme: light dark;
+
+    --mono: "Fira Code", "Courier New", Courier, monospace;
+    --serif: "New Computer Modern", "Latin Modern Roman", Georgia, serif;
+
+    --bg: light-dark(#f6eee2, #17110d);
+    --surface: light-dark(#ece1d1, #211913);
+    --surface-2: light-dark(#f0e6d8, #1d1611);
+    --border: light-dark(#d5c4ae, #3a2d23);
+    --rule: light-dark(#e2d5c3, #2a201a);
+
+    --text: light-dark(#2a1e16, #eadccb);
+    --strong: light-dark(#1b120c, #f7ecde);
+    --muted: light-dark(#4f3d31, #c2b19f);
+    --dim: light-dark(#6e5a4b, #9c8a7a);
+    --link: light-dark(#8f4b17, #e6ad72);
+    --accent: light-dark(#8f4b17, #e6ad72);
+
+    /* syntax highlight */
+    --kw: light-dark(#95501a, #e6ad72);
+    --dt: light-dark(#7b4790, #cfa0dc);
+    --st: light-dark(#3f6229, #b0cc9c);
+    --fu: light-dark(#735400, #f0d07e);
+    --co: light-dark(#6c5849, #93806f);
+    --nb: light-dark(#2c6b74, #9ccbd0);
+    --pp: light-dark(#6a511c, #e2c28e);
+    --num: light-dark(#ab4325, #ee9070);
+}
+
+/* toggle: checked flips whatever the OS prefers */
+:root:has(#theme:checked) {
+    color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:has(#theme:checked) {
+        color-scheme: light;
+    }
 }
 
 /* === Reset básico === */
@@ -14,18 +101,17 @@
 
 html {
     font-size: 16px;
-    /* dark native widgets: scrollbars on tables and code blocks */
-    color-scheme: dark;
-    scrollbar-color: #2a2a2a #111111;
+    scrollbar-color: var(--border) var(--bg);
 }
 
 body {
     margin: 0;
     padding: 0;
-    background: #0a0a0a;
-    color: #d8d8d8;
-    font-family: "Fira Code", "Courier New", Courier, monospace;
-    line-height: 1.7;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    line-height: 1.6;
 }
 
 /* === Estrutura === */
@@ -60,7 +146,7 @@ header h1 {
     font-size: 2rem;
     font-weight: 600;
     text-align: left;
-    color: #f0f0f0;
+    color: var(--strong);
 }
 
 header h1 a {
@@ -72,8 +158,49 @@ header h1 a {
 address {
     margin-bottom: 2rem;
     font-style: normal;
-    color: #a8a8a8;
+    font-size: 1rem;
+    color: var(--muted);
     text-align: left;
+}
+
+/* touch targets: padding grows the hit area, negative margin keeps the line */
+address a,
+#theme + label {
+    display: inline-block;
+    padding: 0.75rem 0.4rem;
+    margin: -0.75rem -0.4rem;
+}
+
+/* === Tema (checkbox + label, sem JS) === */
+#theme {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+}
+
+#theme + label {
+    color: var(--link);
+    cursor: pointer;
+}
+
+/* the label names the scheme a click switches to */
+#theme + label::before { content: "dark"; }
+#theme:checked + label::before { content: "light"; }
+
+@media (prefers-color-scheme: dark) {
+    #theme + label::before { content: "light"; }
+    #theme:checked + label::before { content: "dark"; }
+}
+
+#theme + label:hover {
+    text-decoration: underline;
+}
+
+#theme:focus-visible + label {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
 }
 
 /* === Conteúdo === */
@@ -92,15 +219,43 @@ section {
 }
 
 /* === Tipografia === */
+/* mono: estrutura (títulos, datas, metadados, tabelas); serif: prosa */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+time,
+.meta,
+address,
+footer,
+figcaption,
+table {
+    font-family: var(--mono);
+}
+
+/* medida de leitura da prosa */
+main p,
+main li,
+blockquote {
+    max-width: 70ch;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    color: #f2f2f2;
+    color: var(--strong);
     line-height: 1.3;
     font-weight: 600;
+}
+
+/* headings are sized against the mono, not the larger serif body */
+article h1 {
+    font-size: 2rem;
 }
 
 h2 {
@@ -122,14 +277,14 @@ p {
 
 time {
     display: inline-block;
-    color: #8f8f8f;
+    color: var(--dim);
     font-size: 0.95rem;
     margin-top: 0.2rem;
 }
 
 /* === Links === */
 a {
-    color: #8ab4f8;
+    color: var(--link);
     text-decoration: none;
 }
 
@@ -153,7 +308,7 @@ section > ul {
 section > ul > li {
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid var(--rule);
 }
 
 section > ul > li:last-child {
@@ -166,7 +321,7 @@ main img {
     max-width: 100%;
     height: auto;
     margin: 1.5rem auto;
-    border: 1px solid #2a2a2a;
+    border: 1px solid var(--border);
 }
 
 /* === Figuras === */
@@ -179,14 +334,14 @@ figure img {
 }
 
 figcaption {
-    color: #8f8f8f;
+    color: var(--dim);
     font-size: 0.9rem;
     text-align: center;
 }
 
 /* === Metadados do artigo (code, environment) === */
 .meta {
-    color: #8f8f8f;
+    color: var(--dim);
     font-size: 0.9rem;
     margin-bottom: 0.3rem;
     overflow-wrap: anywhere;
@@ -194,16 +349,16 @@ figcaption {
 
 /* === Código inline === */
 code {
-    font-family: "Fira Code", "Courier New", Courier, monospace;
-    font-size: 0.95em;
+    font-family: var(--mono);
+    font-size: 0.8em;
 }
 
 p code,
 li code,
 td code,
 blockquote code {
-    background: #111111;
-    color: #f0f0f0;
+    background: var(--surface);
+    color: var(--strong);
     padding: 0.08em 0.3em;
     border-radius: 2px;
     white-space: break-spaces;
@@ -214,8 +369,8 @@ pre {
     margin: 1.25rem 0;
     padding: 1rem;
     overflow-x: auto;
-    background: #111111;
-    border: 1px solid #1f1f1f;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 4px;
     line-height: 1.5;
 }
@@ -229,30 +384,30 @@ pre code {
 }
 
 /* === Highlight do Pandoc === */
-code span.kw { color: #ffb86c; }
-code span.dt { color: #bd93f9; }
-code span.st { color: #a5d6a7; }
-code span.fu { color: #ffd54f; }
-code span.ot { color: #d8d8d8; }
-code span.co { color: #7f848e; font-style: italic; }
-code span.nb { color: #81d4fa; }
-code span.pp { color: #f0c674; }
+code span.kw { color: var(--kw); }
+code span.dt { color: var(--dt); }
+code span.st { color: var(--st); }
+code span.fu { color: var(--fu); }
+code span.ot { color: var(--text); }
+code span.co { color: var(--co); font-style: italic; }
+code span.nb { color: var(--nb); }
+code span.pp { color: var(--pp); }
 code span.dv,
 code span.bn,
-code span.fl { color: #f78c6c; }
-code span.cn { color: #bd93f9; }
-code span.cf { color: #ffb86c; }
-code span.im { color: #81d4fa; }
+code span.fl { color: var(--num); }
+code span.cn { color: var(--dt); }
+code span.cf { color: var(--kw); }
+code span.im { color: var(--nb); }
 code span.op,
-code span.va { color: #d8d8d8; }
+code span.va { color: var(--text); }
 
 /* === Blockquote === */
 blockquote {
     margin: 1.25rem 0;
     padding: 0.75rem 1rem;
-    border-left: 3px solid #2f2f2f;
-    color: #bdbdbd;
-    background: #0f0f0f;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+    background: var(--surface-2);
 }
 
 /* === Tabelas === */
@@ -262,31 +417,38 @@ table {
     overflow-x: auto;
     border-collapse: collapse;
     margin: 1.5rem 0;
+    font-size: 0.85rem;
 }
 
 th,
 td {
     padding: 0.65rem;
     white-space: nowrap;
-    border: 1px solid #1f1f1f;
+    border: 1px solid var(--border);
     text-align: left;
 }
 
 th {
-    color: #f0f0f0;
-    background: #101010;
+    color: var(--strong);
+    background: var(--surface);
 }
 
 math {
-    font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "Noto Sans Math", math;
-    font-size: 1.05em;
+    font-family: "Latin Modern Math", "STIX Two Math", "Cambria Math", "Noto Sans Math", math;
+    font-size: 1em;
+}
+
+/* long display formulas scroll inside their paragraph, not the page */
+p:has(> math[display="block"]) {
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 /* === Rodapé === */
 footer {
     padding-top: 1rem;
     padding-bottom: 2rem;
-    color: #8a8a8a;
+    color: var(--dim);
     font-size: 0.92rem;
     text-align: left;
 }
@@ -298,6 +460,10 @@ footer {
     }
 
     header h1 {
+        font-size: 1.6rem;
+    }
+
+    article h1 {
         font-size: 1.6rem;
     }
 
@@ -335,13 +501,13 @@ footer {
 
 /* === Carteira (rodapé) === */
 .wallet {
-    color: #8a8a8a;
+    color: var(--dim);
 }
 
 .wallet code {
     display: block;
     margin-top: 0.2rem;
-    color: #ffb86c;
+    color: var(--accent);
     font-size: 0.75rem;
     overflow-wrap: anywhere;
     white-space: normal;
