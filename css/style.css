@@ -333,6 +333,45 @@ figure img {
     margin-bottom: 0.5rem;
 }
 
+/* line art (black ink on white paper): multiply puts the ink on latte;
+   on espresso, invert + screen turns it into light ink on the page.
+   brightness/contrast first push off-white paper to pure white. */
+img.ink {
+    border: 0;
+    filter: brightness(1.06) contrast(1.15);
+    mix-blend-mode: multiply;
+}
+
+:root:has(#theme:checked) img.ink {
+    filter: brightness(1.06) contrast(1.15) invert(1) hue-rotate(180deg) sepia(0.15) brightness(0.92);
+    mix-blend-mode: screen;
+}
+
+@media (prefers-color-scheme: dark) {
+    img.ink {
+        filter: brightness(1.06) contrast(1.15) invert(1) hue-rotate(180deg) sepia(0.15) brightness(0.92);
+        mix-blend-mode: screen;
+    }
+
+    :root:has(#theme:checked) img.ink {
+        filter: brightness(1.06) contrast(1.15);
+        mix-blend-mode: multiply;
+    }
+}
+
+/* charts come in a latte and an espresso file; show the one matching the
+   active scheme (OS preference, flipped by the #theme toggle) */
+.theme-dark { display: none; }
+:root:has(#theme:checked) .theme-light { display: none; }
+:root:has(#theme:checked) .theme-dark { display: block; }
+
+@media (prefers-color-scheme: dark) {
+    .theme-light { display: none; }
+    .theme-dark { display: block; }
+    :root:has(#theme:checked) .theme-light { display: block; }
+    :root:has(#theme:checked) .theme-dark { display: none; }
+}
+
 figcaption {
     color: var(--dim);
     font-size: 0.9rem;

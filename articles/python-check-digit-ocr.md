@@ -1,8 +1,8 @@
 ---
 title: "Python: Reading check-digit codes from images, barcode first"
-date: 2026-11-18
+date: 2026-11-20
 description: "Reading EAN-13 barcodes and IBANs from degraded images with pyzbar and Tesseract, and measuring what checksum repair really fixes."
-code: "https://github.com/jgtux/checkdigit-vision/tree/62b547f"
+code: "https://github.com/jgtux/checkdigit-vision/tree/b6ec4d2"
 og_image: "/images/check-digit-ocr-article.webp"
 environment: "Linux x86_64, Python 3.14.7, Tesseract 5.5.3, pyzbar 0.1.9, OpenCV 5.1"
 ---
@@ -112,7 +112,11 @@ An OCR read is only accepted if it passes its checksum.
 
 Share of the 40 labels read correctly, per degradation level:
 
-![EAN-13 read rates per degradation](/images/python-check-digit-ocr/ean_read_rates.svg)
+<figure>
+<img class="theme-light" src="/images/python-check-digit-ocr/ean_read_rates-light.svg" alt="EAN-13 read rates per degradation">
+<img class="theme-dark" src="/images/python-check-digit-ocr/ean_read_rates-dark.svg" alt="EAN-13 read rates per degradation">
+<figcaption aria-hidden="true">EAN-13 read rates per degradation</figcaption>
+</figure>
 
 Notice how the barcode is the first thing to break. With blur sigma 2,
 10% of the barcode covered, or the image at half size, pyzbar decodes
@@ -121,7 +125,11 @@ OCR still reads the printed digits in 97.5% to 100% of the labels.
 
 The IBAN, inside a QR code, behaves differently:
 
-![IBAN read rates per degradation](/images/python-check-digit-ocr/iban_read_rates.svg)
+<figure>
+<img class="theme-light" src="/images/python-check-digit-ocr/iban_read_rates-light.svg" alt="IBAN read rates per degradation">
+<img class="theme-dark" src="/images/python-check-digit-ocr/iban_read_rates-dark.svg" alt="IBAN read rates per degradation">
+<figcaption aria-hidden="true">IBAN read rates per degradation</figcaption>
+</figure>
 
 The QR code survives blur, occlusion and downscaling much better than
 the barcode. It fails on more than half of the labels from 20 degrees of
@@ -130,7 +138,11 @@ where the pipeline loses most IBANs.
 
 Preprocessing isn't free either:
 
-![Raw vs preprocessed OCR](/images/python-check-digit-ocr/ocr_raw_vs_pre.svg)
+<figure>
+<img class="theme-light" src="/images/python-check-digit-ocr/ocr_raw_vs_pre-light.svg" alt="Raw vs preprocessed OCR">
+<img class="theme-dark" src="/images/python-check-digit-ocr/ocr_raw_vs_pre-dark.svg" alt="Raw vs preprocessed OCR">
+<figcaption aria-hidden="true">Raw vs preprocessed OCR</figcaption>
+</figure>
 
 With 3 degrees of rotation, raw OCR reads 2.5% of the EAN-13s and the
 preprocessed image reads 100%. With blur sigma 3 it flips: raw reads
