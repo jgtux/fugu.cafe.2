@@ -6,7 +6,7 @@ og_image: "/images/openbsd-static-pages-article.webp"
 environment: "OpenBSD 7.7 (VPS)"
 ---
 
-![Setup static sites on OpenBSD](/images/openbsd-static-pages-article.webp){.ink}
+![Setup static sites on OpenBSD](/images/openbsd-static-pages-article.webp)
 
 ## Introduction
 
