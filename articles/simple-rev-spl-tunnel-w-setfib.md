@@ -6,7 +6,7 @@ og_image: "/images/spl-rev-split-tunnel-on-fbsd-w-setfib.webp"
 environment: "FreeBSD 15"
 ---
 
-![Simple rev split tunneling on FBSD w setfib](/images/spl-rev-split-tunnel-on-fbsd-w-setfib.webp){.ink}
+![Simple rev split tunneling on FBSD w setfib](/images/spl-rev-split-tunnel-on-fbsd-w-setfib.webp)
 
 ## Introduction
 
